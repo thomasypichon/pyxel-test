@@ -10,8 +10,8 @@ class Game:
         
         # Starting position of our character
         self.x = 80  # middle of screen horizontally
-        self.y = 60  # middle of screen vertically
-        
+        self.y = 60
+        self.color = 11         
         # Start the game - this will call update() and draw() repeatedly
         pyxel.run(self.update, self.draw)
     
@@ -26,6 +26,12 @@ class Game:
             self.y = self.y - 2  # Move up
         if pyxel.btn(pyxel.KEY_DOWN):
             self.y = self.y + 2  # Move down
+                    # Check if mouse button is pressed
+        if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
+            self.color = self.color + 1  # Add 1 to color
+        if self.color==16 :
+            self.color = 0
+    
     
     def draw(self):
         """This runs every frame to draw everything on screen"""
@@ -33,11 +39,12 @@ class Game:
         pyxel.cls(0)
         
         # Draw a circle at position (x, y) with radius 8 and color 11 (light blue)
-        pyxel.circ(self.x, self.y, 8, 11)
+        pyxel.circ(self.x, self.y, 5, self.color)
         
         # Draw some text at the top
-        pyxel.text(10, 10, "Use arrow keys to move!", 7)
+        pyxel.text(10, 10, "Herro!", 7)
 
 # Start the game!
 Game()
+
 

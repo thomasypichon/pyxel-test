@@ -31,8 +31,7 @@ if [ -f "my_first_game.html" ]; then
     echo ""
     echo "✅ Done! The web version is saved as index.html"
     echo ""
-    echo "To test it locally, run: ./script_run_local_server.sh"
-    echo "Then visit: http://localhost:8000"
+    echo "Now commit and push to deploy to GitHub Pages!"
 else
     echo ""
     echo "❌ Error: Failed to create HTML file"

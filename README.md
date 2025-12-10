@@ -43,22 +43,31 @@ Want to share your game on the internet? You can export it to run in a web brows
 
 This creates an `index.html` file that can run in any web browser.
 
-### Test Locally
-```bash
-./script_run_local_server.sh
-```
-
-Then open your browser to: **http://localhost:8000**
-
-Press Ctrl+C in the terminal to stop the server.
-
 ### Deploy Online (Free!)
-Once you've tested locally, you can deploy to:
-- **GitHub Pages** - Free hosting right from this repo!
+
+Your game is just a single `index.html` file, so it can be hosted on any static website service!
+
+**Option 1: GitHub Pages (Recommended)**
+1. Commit and push your changes:
+   ```bash
+   git add .
+   git commit -m "Add web version of game"
+   git push origin main
+   ```
+2. Go to your repo on GitHub.com → **Settings** → **Pages** (in sidebar)
+3. Under "Build and deployment":
+   - **Source**: Deploy from a branch
+   - **Branch**: `main`
+   - **Folder**: `/ (root)`
+   - Click **Save**
+4. Wait a few minutes, then visit: `https://[username].github.io/pyxel-test/`
+
+**Other Options:**
 - **Netlify** - Drag and drop the `index.html` file
 - **Vercel** - Connect your GitHub repo for automatic deploys
+- **Any static hosting** - Just upload `index.html`!
 
-Ask Dad for help setting up deployment when you're ready to share with friends!
+To update your live game: Edit `my_first_game.py`, run `./script_export_to_web.sh`, commit, and push!
 
 ## Auto-Save Setting
 To set up auto-save in Cursor:

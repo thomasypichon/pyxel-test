@@ -15,3 +15,6 @@ env/
 # OS files
 .DS_Store
 
+# Pyxel web export files (intermediate build file, not needed in repo)
+*.pyxapp
+

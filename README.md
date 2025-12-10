@@ -32,12 +32,50 @@ python my_first_game.py
 - Use arrow keys (←↑↓→) to move the blue circle
 - The circle is your character!
 
+## 🌐 Deploy to Web
+
+Want to share your game on the internet? You can export it to run in a web browser!
+
+### Export Your Game
+```bash
+./script_export_to_web.sh
+```
+
+This creates an `index.html` file that can run in any web browser.
+
+### Test Locally
+```bash
+./script_run_local_server.sh
+```
+
+Then open your browser to: **http://localhost:8000**
+
+Press Ctrl+C in the terminal to stop the server.
+
+### Deploy Online (Free!)
+Once you've tested locally, you can deploy to:
+- **GitHub Pages** - Free hosting right from this repo!
+- **Netlify** - Drag and drop the `index.html` file
+- **Vercel** - Connect your GitHub repo for automatic deploys
+
+Ask Dad for help setting up deployment when you're ready to share with friends!
+
 ## Auto-Save Setting
 To set up auto-save in Cursor:
 1. Go to Cursor Settings (Cmd + ,)
 2. Search for "auto save"
 3. Change "Auto Save" to "afterDelay"
 4. Set "Auto Save Delay" to 1000 (that's 1 second)
+
+## Disabling AI Autocomplete
+AI autocomplete can be confusing when learning to code. Here's how to turn it off completely:
+
+**The Only Method That Works:**
+1. Press `Cmd + Shift + P` (Mac)
+2. Type: `Disable Cursor Tab`
+3. Hit Enter
+
+This turns off Cursor's AI autocomplete so you can think through the code yourself!
 
 ## 📚 Learning Notes
 

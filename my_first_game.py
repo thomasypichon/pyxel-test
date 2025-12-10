@@ -40,7 +40,10 @@ class Game:
             self.color = self.color + 1  # Add 1 to color
         if self.color==16 :
             self.color = 0
-    
+
+        
+        
+
 
     
     def draw(self):

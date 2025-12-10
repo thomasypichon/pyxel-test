@@ -22,23 +22,23 @@ class Game:
     def update(self):
         """This runs every frame to update the game"""
         # Check if player pressed arrow keys and move character
-        if pyxel.btn(pyxel.KEY_LEFT):
+        if pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_LEFT):
             self.direction = "left"  # Remember we're facing left
             self.x = self.x - 2  #move left
             if self.x < 0:
                 self.x = 160  # Went off left, appear on right
-        if pyxel.btn(pyxel.KEY_RIGHT):
+        if pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_RIGHT):
             self.direction = "right"  # Remember we're facing right
             self.x = self.x + 2  # Move right
             if self.x > 160:
                 self.x = 0  # Went off right, appear on left
 
-        if pyxel.btn(pyxel.KEY_UP):
+        if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_UP):
             self.direction = "up"  # Remember we're facing up
             self.y = self.y - 2  # Move up
             if self.y < 0:
                 self.y = 120  # Went off top, appear on bottom   
-        if pyxel.btn(pyxel.KEY_DOWN):
+        if pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_DOWN):
             self.direction = "down"  # Remember we're facing down
             self.y = self.y + 2  # Move down
             if self.y > 120:
@@ -68,7 +68,7 @@ class Game:
             elif bullet["direction"] == "up":
                 bullet["y"] = bullet["y"] - 3
             elif bullet["direction"] == "down":
-                bullet["y"] = bullet["y"] + 3
+                bullet["y"] = bullet["y"] + 3 
         
         # Remove bullets that went off screen
         self.bullets = [b for b in self.bullets if b["x"] > 0 and b["x"] < 160 and b["y"] > 0 and b["y"] < 120]

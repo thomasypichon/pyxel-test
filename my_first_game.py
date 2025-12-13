@@ -8,6 +8,12 @@ class Game:
         # Create a window that is 160 pixels wide and 120 pixels tall
         pyxel.init(160, 120, title="My First Game")
         
+        # Game state - what screen are we on?
+        self.game_state = "start_screen"  # Can be "start_screen" or "playing"
+        
+        # Menu selection - which button is highlighted?
+        self.selected_button = 0  # 0 = PLAY button, 1 = CREDITS button
+        
         # Starting position of our character
         self.x = 80  # middle of screen horizontally
         self.y = 60
@@ -21,6 +27,64 @@ class Game:
     
     def update(self):
         """This runs every frame to update the game"""
+        # If we're on the credits screen, check for button to go back
+        if self.game_state == "credits_screen":
+            # Press SPACE or A button to go back to start screen
+            if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_A):
+                self.game_state = "start_screen"  # Go back to menu!
+            
+            # Mouse click on BACK button (x: 50-110, y: 100-112)
+            if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
+                mouse_x = pyxel.mouse_x
+                mouse_y = pyxel.mouse_y
+                if 50 <= mouse_x <= 110 and 100 <= mouse_y <= 112:
+                    self.game_state = "start_screen"  # BACK clicked!
+            
+            return  # Don't do anything else on credits screen
+        
+        # If we're on the start screen, check for button to start game
+        if self.game_state == "start_screen":
+            # Mouse hover detection - check if mouse is over a button
+            mouse_x = pyxel.mouse_x
+            mouse_y = pyxel.mouse_y
+            
+            # Check if mouse is over PLAY button (x: 50-110, y: 50-62)
+            if 50 <= mouse_x <= 110 and 50 <= mouse_y <= 62:
+                self.selected_button = 0  # Highlight PLAY button
+            # Check if mouse is over CREDITS button (x: 50-110, y: 70-82)
+            elif 50 <= mouse_x <= 110 and 70 <= mouse_y <= 82:
+                self.selected_button = 1  # Highlight CREDITS button
+            
+            # Use UP/DOWN arrows to move between menu buttons
+            if pyxel.btnp(pyxel.KEY_UP) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_DPAD_UP):
+                self.selected_button = self.selected_button - 1  # Move up
+                if self.selected_button < 0:
+                    self.selected_button = 1  # Wrap to bottom button
+            
+            if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_DPAD_DOWN):
+                self.selected_button = self.selected_button + 1  # Move down
+                if self.selected_button > 1:
+                    self.selected_button = 0  # Wrap to top button
+            
+            # Press SPACE or A button to select the highlighted button
+            if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_A):
+                if self.selected_button == 0:
+                    self.game_state = "playing"  # PLAY button selected!
+                elif self.selected_button == 1:
+                    self.game_state = "credits_screen"  # CREDITS button selected!
+            
+            # Mouse click to select button
+            if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
+                # Check if click is on PLAY button
+                if 50 <= mouse_x <= 110 and 50 <= mouse_y <= 62:
+                    self.game_state = "playing"  # PLAY clicked!
+                # Check if click is on CREDITS button
+                elif 50 <= mouse_x <= 110 and 70 <= mouse_y <= 82:
+                    self.game_state = "credits_screen"  # CREDITS clicked!
+            
+            return  # Don't do anything else on start screen
+        
+        # If we get here, we're in "playing" mode
         # Check if player pressed arrow keys and move character
         if pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_LEFT):
             self.direction = "left"  # Remember we're facing left
@@ -80,6 +144,47 @@ class Game:
         """This runs every frame to draw everything on screen"""
         # Clear the screen with color 0 (black)
         pyxel.cls(0)
+        
+        # If we're on the start screen, show that instead
+        if self.game_state == "start_screen":
+            # Draw title
+            pyxel.text(40, 25, "DERINMON", 10)
+            pyxel.text(42, 33, "the game", 7)
+            
+            # Draw PLAY button (centered at y=50)
+            play_color = 11 if self.selected_button == 0 else 5  # Light blue if selected, dark gray if not
+            pyxel.rect(50, 50, 60, 12, play_color)  # Button background
+            pyxel.text(70, 54, "PLAY", 0)  # Button text (black)
+            
+            # Draw CREDITS button (centered at y=70)
+            credits_color = 11 if self.selected_button == 1 else 5  # Light blue if selected, dark gray if not
+            pyxel.rect(50, 70, 60, 12, credits_color)  # Button background
+            pyxel.text(62, 74, "CREDITS", 0)  # Button text (black)
+            
+            return  # Don't draw the game stuff
+        
+        # If we're on the credits screen, show that instead
+        if self.game_state == "credits_screen":
+            # Draw title
+            pyxel.text(55, 20, "CREDITS", 10)
+            
+            # Draw contributors
+            pyxel.text(30, 40, "Game Dev:", 7)
+            pyxel.text(30, 48, "Thomas Pichon", 11)
+            
+            pyxel.text(30, 60, "Art:", 7)
+            pyxel.text(30, 68, "Derin Balci", 11)
+            
+            pyxel.text(30, 80, "Extra Credits:", 7)
+            pyxel.text(30, 88, "(coming soon!)", 6)
+            
+            # Draw BACK button
+            pyxel.rect(50, 100, 60, 12, 11)  # Button background
+            pyxel.text(68, 104, "BACK", 0)  # Button text
+            
+            return  # Don't draw the game stuff
+        
+        # If we get here, we're playing the game
         pyxel.circ(50, 50, 3, 3)    # A green circle
         pyxel.circ(100, 80, 3, 3)   # Another green circle
         pyxel.circ(150, 30, 3, 11)
@@ -99,5 +204,3 @@ class Game:
 
 # Start the game!
 Game()
-
-

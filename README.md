@@ -15,33 +15,47 @@ Pyxel is a retro game engine for Python. It lets you make games that look like o
 - Pyxel installed
 - Cursor configured
 
-### How to Run Your Game in Cursor
+### How to Run Your Game
 
-**Method 1: Use the Play Button (Easy!)** 🎮
-1. Open `my_first_game.py`
-2. Look for the play button (▶️) in the top-right corner
-3. Click it and select "Run My Game"
-4. Your game window will open!
+**Click the Play Button (▶️) in the top-right corner and choose:**
 
-**Method 2: Use the Terminal**
-```bash
-python my_first_game.py
-```
+1. **▶️ Run Game (Desktop)** - Play on your computer with keyboard
+2. **📱 Test Mobile Version** - See how it looks on phones/tablets
 
 ### Controls
-- Use arrow keys (←↑↓→) to move the blue circle
-- The circle is your character!
+- **Desktop**: Use arrow keys (←↑↓→) to move
+- **Mobile**: Touch the on-screen buttons
+
+## 📱 Test Mobile Version
+
+Click the play button (▶️) → **"📱 Test Mobile Version"**
+
+This will:
+- Export your game to web format
+- Start a web server
+- Open your browser automatically
+
+**To see the mobile controls:**
+1. In the browser, press `Cmd + Option + I` (Developer Tools)
+2. Press `Cmd + Option + M` for mobile mode (Firefox) or click the phone icon (Chrome)
+3. Select "iPad" or "iPhone"
+4. Refresh the page
+5. You'll see touch controls! 🎮
+
+The cursor stays visible so you can click the touch buttons easily.
+
+When done, press `Ctrl+C` in the terminal.
 
 ## 🌐 Deploy to Web
 
-Want to share your game on the internet? You can export it to run in a web browser!
+Want to share your game online?
 
-### Export Your Game
+### Quick Export
 ```bash
 ./script_export_to_web.sh
 ```
 
-This creates an `index.html` file that can run in any web browser.
+This creates an `index.html` file ready for the web!
 
 ### Deploy Online (Free!)
 
@@ -97,6 +111,7 @@ The `notes/` folder contains short explanations of concepts you're learning!
 
 **Current Notes:**
 - `01-what-is-a-class.md` - Understanding classes and objects
+- `02-testing-mobile-controls.md` - How to test your game on mobile devices
 
 ## Ideas for the Game
 (Write down ideas here!)

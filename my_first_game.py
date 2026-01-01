@@ -29,12 +29,17 @@ class Game:
         self.speed = 1
         self.direction = "right"  # Which way we're facing
         self.bullets = []  # List to store all bullets
-        self.ammo = 200  # How many lasers you have left
+        self.ammo = 0  # How many lasers you have left
         
         # NPC (friendly character)
         self.npc_x = 120  # NPC stands on the right side
         self.npc_y = 70
         self.showing_dialogue = False  # Are we talking to the NPC?
+        
+        # Quest system
+        self.quest_active = False  # Do we have a quest?
+        self.quest_complete = False  # Did we finish it?
+        self.quest_menu_open = False  # Is the quest menu showing?
         
         # Start the game - this will call update() and draw() repeatedly
         pyxel.run(self.update, self.draw)
@@ -120,6 +125,10 @@ class Game:
             self.game_state = "start_screen"
             return
         
+        # Press Q to toggle quest menu
+        if pyxel.btnp(pyxel.KEY_Q):
+            self.quest_menu_open = not self.quest_menu_open  # Toggle on/off
+        
         # Check if player pressed arrow keys and move character
         if pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_LEFT):
             self.direction = "left"  # Remember we're facing left
@@ -179,9 +188,26 @@ class Game:
         if distance_x < 20 and distance_y < 20:
             # Player is close! Check if they press spacebar to talk
             if pyxel.btnp(pyxel.KEY_SPACE):
-                self.showing_dialogue = not self.showing_dialogue  # Toggle dialogue on/off
+                if not self.quest_active and not self.quest_complete:
+                    # First time talking - show cheeseburger request OR activate quest!
+                    if not self.showing_dialogue:
+                        self.showing_dialogue = True  # Show "can i haz cheeseburger"
+                    else:
+                        self.showing_dialogue = False  # Close dialogue
+                        self.quest_active = True  # NOW activate the quest!
+                elif self.quest_active and not self.quest_complete:
+                    # Second time talking - give the reward!
+                    self.quest_complete = True
+                    self.ammo = self.ammo + 5  # Give 5 more poke bowls!
+                    self.showing_dialogue = True
+                else:
+                    # Quest already done - just toggle dialogue
+                    self.showing_dialogue = not self.showing_dialogue
         else:
             # Player walked away, close dialogue
+            if self.showing_dialogue and not self.quest_active:
+                # If dialogue closes before quest active, activate quest
+                self.quest_active = True
             self.showing_dialogue = False
 
 
@@ -260,9 +286,20 @@ class Game:
             # Draw a box for the dialogue
             pyxel.rect(10, 95, 140, 20, 5)  # Dark gray box
             pyxel.rectb(10, 95, 140, 20, 7)  # White border
-            # Draw the text inside
-            pyxel.text(15, 100, "can i haz a", 7)
-            pyxel.text(15, 107, "chezbugers pleaz", 7)
+            
+            # Show different text based on quest status
+            if self.quest_active and not self.quest_complete:
+                # Quest active - giving reward
+                pyxel.text(15, 100, "Here's 5 poke bowls!", 10)
+                pyxel.text(15, 107, "Quest complete!", 11)
+            elif self.quest_complete:
+                # Quest already done
+                pyxel.text(15, 100, "Thanks for talking", 7)
+                pyxel.text(15, 107, "to me earlier!", 7)
+            else:
+                # First time talking - giving the quest
+                pyxel.text(15, 100, "can i haz a", 7)
+                pyxel.text(15, 107, "chezbugers pleaz?", 7)
         
         # Draw all bullets
         for bullet in self.bullets:
@@ -270,7 +307,34 @@ class Game:
         
         # Draw some text at the top
         pyxel.text(10, 10, "derinmon, the game", 7)
-        pyxel.text(10, 20, "Ammo: " + str(self.ammo), 7)  # Show how much ammo left
+        pyxel.text(10, 20, "Poke Bowls: " + str(self.ammo), 7)  # Show how many poke bowls left
+        
+        # Draw quest menu if it's open (press Q to toggle)
+        if self.quest_menu_open:
+            # Draw a semi-transparent background box
+            pyxel.rect(20, 20, 120, 80, 1)  # Dark blue box
+            pyxel.rectb(20, 20, 120, 80, 7)  # White border
+            
+            # Title
+            pyxel.text(55, 25, "QUEST MENU", 10)
+            pyxel.text(50, 32, "Press Q to close", 6)
+            
+            # Show quest info
+            if not self.quest_active:
+                pyxel.text(25, 45, "Quest:", 11)
+                pyxel.text(25, 53, "Talk to the yellow", 7)
+                pyxel.text(25, 61, "NPC", 7)
+                pyxel.text(25, 73, "Reward: 5 Poke Bowls", 6)
+            elif self.quest_active and not self.quest_complete:
+                pyxel.text(25, 45, "Active Quest:", 11)
+                pyxel.text(25, 53, "Talk to NPC Again", 7)
+                pyxel.text(25, 65, "Reward:", 10)
+                pyxel.text(25, 73, "5 Poke Bowls", 7)
+            else:
+                pyxel.text(25, 45, "Quest Complete!", 10)
+                pyxel.text(25, 53, "You talked to", 7)
+                pyxel.text(25, 61, "the NPC and got", 7)
+                pyxel.text(25, 69, "5 poke bowls!", 11)
 
 
 # Start the game!

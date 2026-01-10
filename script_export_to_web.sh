@@ -1,14 +1,20 @@
 #!/bin/bash
 # Export Pyxel game to web format
 
-echo "Exporting my_first_game.py to web..."
+echo "Exporting game (7 Python files) to web..."
 
 # Activate virtual environment
 source venv/bin/activate
 
-# Create a temporary directory with just the game file
+# Create a temporary directory with all the game files
 mkdir -p game_temp
 cp my_first_game.py game_temp/
+cp player.py game_temp/
+cp bullets.py game_temp/
+cp npc.py game_temp/
+cp quests.py game_temp/
+cp menus.py game_temp/
+cp world.py game_temp/
 
 # Package the game from the temp directory
 # Note: The .pyxapp file will be named after the directory (game_temp.pyxapp)
